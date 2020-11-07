@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D58C773725566D4E009A399E /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58C773625566D4E009A399E /* Modifiers.swift */; };
+		D58C773C25566F13009A399E /* DaysWeatherCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58C773B25566F13009A399E /* DaysWeatherCard.swift */; };
 		D5CCCACE255657AA00B7C2D9 /* WeatherAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CCCACD255657AA00B7C2D9 /* WeatherAppApp.swift */; };
 		D5CCCAD0255657AA00B7C2D9 /* WeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CCCACF255657AA00B7C2D9 /* WeatherView.swift */; };
 		D5CCCAD2255657AD00B7C2D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5CCCAD1255657AD00B7C2D9 /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 
 /* Begin PBXFileReference section */
 		D58C773625566D4E009A399E /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
+		D58C773B25566F13009A399E /* DaysWeatherCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysWeatherCard.swift; sourceTree = "<group>"; };
 		D5CCCACA255657AA00B7C2D9 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5CCCACD255657AA00B7C2D9 /* WeatherAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppApp.swift; sourceTree = "<group>"; };
 		D5CCCACF255657AA00B7C2D9 /* WeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherView.swift; sourceTree = "<group>"; };
@@ -38,6 +40,7 @@
 		D58C773425566CE9009A399E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D58C773A25566EED009A399E /* Supporting Views */,
 				D5CCCACF255657AA00B7C2D9 /* WeatherView.swift */,
 			);
 			path = Views;
@@ -49,6 +52,14 @@
 				D58C773625566D4E009A399E /* Modifiers.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		D58C773A25566EED009A399E /* Supporting Views */ = {
+			isa = PBXGroup;
+			children = (
+				D58C773B25566F13009A399E /* DaysWeatherCard.swift */,
+			);
+			path = "Supporting Views";
 			sourceTree = "<group>";
 		};
 		D5CCCAC1255657A900B7C2D9 = {
@@ -160,6 +171,7 @@
 				D5CCCAD0255657AA00B7C2D9 /* WeatherView.swift in Sources */,
 				D58C773725566D4E009A399E /* Modifiers.swift in Sources */,
 				D5CCCACE255657AA00B7C2D9 /* WeatherAppApp.swift in Sources */,
+				D58C773C25566F13009A399E /* DaysWeatherCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

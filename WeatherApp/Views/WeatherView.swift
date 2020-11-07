@@ -12,9 +12,9 @@ let screen = UIScreen.main.bounds
 struct WeatherView: View {
     var body: some View {
         
-        VStack {
+        VStack(spacing: 0) {
             ZStack {
-                Color(#colorLiteral(red: 0.3219612935, green: 0.8010270506, blue: 0.9294446244, alpha: 1))
+                Color(#colorLiteral(red: 0, green: 0.6941176471, blue: 0.8235294118, alpha: 1))
                 
                 HStack {
                     VStack(alignment: .leading, spacing: 60){
@@ -49,18 +49,24 @@ struct WeatherView: View {
                     .padding()
 
                 }
-                
-                
             }
             .frame(height: screen.height/2)
-            .edgesIgnoringSafeArea(.all)
-            
-    
-            Spacer()
+
             
             
+            VStack {
+                ScrollView(.vertical, showsIndicators: false){
+                    ForEach(1..<5) { _ in
+                        DaysWeatherCard()
+                    }
+                }
+            }
+            .padding(.top, 5)
+            .padding(.bottom, 10)
+            .frame(height: screen.height/2)
+
             
-        }
+        }.edgesIgnoringSafeArea(.all)
         
     }
 }
