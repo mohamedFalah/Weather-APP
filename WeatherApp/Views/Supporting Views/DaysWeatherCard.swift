@@ -6,29 +6,33 @@
 //
 
 import SwiftUI
-
+import SDWebImageSwiftUI
 struct DaysWeatherCard: View {
+    
+    var day: Forcast!
+    
     var body: some View {
         HStack (){
-            Image(systemName: "cloud.fill")
+            WebImage(url: URL(string: "\(BASE_ICON_URL)\(day.weatherIcon)\(ICON_FORMAT)"))
                 .resizable()
                 .renderingMode(.original)
-                .font(.largeTitle)
-                .foregroundColor(Color.white.opacity(0.97))
-                .frame(width: 75, height: 50, alignment: .center)
-                
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 100, height: 100, alignment: .leading)
+                .shadow(color: Color.white, radius: 3, x: 1, y: 3)
+                .shadow(color: Color.black, radius: 3, x: 1, y: 3)
+            
             VStack(alignment: .leading , spacing: 5) {
-                Text("Sunday")
+                Text(day.day)
                     .font(.title)
-                Text("8 Nov")
+                Text(day.weatherType)
                     .font(.title)
             }
             .padding(.leading, 8)
             Spacer()
             VStack(alignment: .leading , spacing: 5) {
-                Text("32°")
+                Text("\(Int(day.maxTemperature))°")
                     .font(.title)
-                Text("21°")
+                Text("\(Int(day.minTemperature))°")
                     .font(.title)
             }
         }
@@ -36,12 +40,12 @@ struct DaysWeatherCard: View {
         .background(RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(LinearGradient(
                                 gradient: Gradient(
-                                    colors: [Color(#colorLiteral(red: 0.9921568627, green: 0.8588235294, blue: 0.1529411765, alpha: 1)), Color(#colorLiteral(red: 0.9921568627, green: 0.8588235294, blue: 0.1529411765, alpha: 0.5))]),
+                                    colors: [Color(#colorLiteral(red: 0.9921568627, green: 0.8588235294, blue: 0.1529411765, alpha: 0.5)), Color(#colorLiteral(red: 0.9921568627, green: 0.8588235294, blue: 0.1529411765, alpha: 1))]),
                                     startPoint: .leading,
                                     endPoint: .trailing)
                         )
         )
-        .frame(width: screen.width - 20, height: .infinity, alignment: .center)
+        .frame(width: SCREEN.width - 20)
         .shadow(color: Color(#colorLiteral(red: 0.9921568627, green: 0.8588235294, blue: 0.1529411765, alpha: 1)).opacity(0.3), radius: 10, x: 0, y: 8)
     }
 }

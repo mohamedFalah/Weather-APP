@@ -6,67 +6,107 @@
 //
 
 import SwiftUI
-
-let screen = UIScreen.main.bounds
+import SDWebImageSwiftUI
 
 struct WeatherView: View {
+    
+    @ObservedObject var weatherVM = WeatherViewModel()
+    @State private var todayDate: String = ""
+    @State private var temperature: String = ""
+    @State private var city: String = ""
+    @State private var weatherType:String = ""
+    @State private var weatherIcon: String = ""
+    @State private var isLoaded = false
     var body: some View {
         
         VStack(spacing: 0) {
             ZStack {
                 Color(#colorLiteral(red: 0, green: 0.6941176471, blue: 0.8235294118, alpha: 1))
                 
-                HStack {
-                    VStack(alignment: .leading, spacing: 60){
-                        Text("Today, 7 November, 2020")
+                VStack (alignment: .leading, spacing: 0){
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(isLoaded ? todayDate : "Sunday, 8 November 2020")
                             .font(.title)
                             .foregroundColor(Color.white.opacity(0.97))
                             .modifier(ShadowModifer())
-                        Text("26°")
-                            .font(.system(size: 56, weight: .bold))
-                            .foregroundColor(Color.white.opacity(0.97))
-                            .modifier(ShadowModifer())
-                        Text("Al Qatif")
-                            .font(.title)
-                            .foregroundColor(Color.white.opacity(0.97))
-                            .modifier(ShadowModifer())
-                        
+                            .lineLimit(4)
+                            .multilineTextAlignment(.leading)
+                            .redacted(reason: isLoaded ? .init() : .placeholder)
                     }
                     .padding()
-
-                    VStack {
+                    HStack(spacing: 0) {
+                        VStack(alignment: .leading, spacing: 0){
+                            Spacer()
+                            Text(isLoaded ? "\(temperature)°" :"32°")
+                                .font(.system(size: 56, weight: .bold))
+                                .foregroundColor(Color.white.opacity(0.97))
+                                .lineLimit(2)
+                                .modifier(ShadowModifer())
+                                .redacted(reason: isLoaded ? .init() : .placeholder)
+                            Spacer()
+                            Text(isLoaded ? city : "Al Qatif" )
+                                .font(.title)
+                                .foregroundColor(Color.white.opacity(0.97))
+                                .lineLimit(2)
+                                .modifier(ShadowModifer())
+                                .redacted(reason: isLoaded ? .init() : .placeholder)
+                            
+                        }
                         Spacer()
-                        Image(systemName: "cloud.fill")
-                            .font(.largeTitle)
-                            .foregroundColor(Color.white.opacity(0.97))
-                            .modifier(ShadowModifer())
-                        Text("Cloudy")
-                            .font(.title)
-                            .foregroundColor(Color.white.opacity(0.97))
-                            .modifier(ShadowModifer())
-                        
+                        VStack {
+                            Spacer()
+                            WebImage(url: URL(string: "\(BASE_ICON_URL)\(weatherIcon)\(ICON_FORMAT)"))
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 100, height: 100, alignment: .center)
+                                .modifier(ShadowModifer())
+//                                .redacted(reason: isLoaded ? .init() : .placeholder)
+                            Text(isLoaded ? weatherType : "Clear Sky")
+                                .font(.title)
+                                .foregroundColor(Color.white.opacity(0.97))
+                                .modifier(ShadowModifer())
+                                .redacted(reason: isLoaded ? .init() : .placeholder)
+                            
+                        }
                     }
                     .padding()
-
                 }
             }
-            .frame(height: screen.height/2)
+            .frame(height: SCREEN.height/2)
+            .shadow(color: Color(#colorLiteral(red: 0, green: 0.6941176471, blue: 0.8235294118, alpha: 1)).opacity(0.3), radius: 5, x: 0, y: 5)
+            .onAppear(perform: {
+                weatherVM.downloadTodayWeather {
+                    self.todayDate = weatherVM.todayWeather.date
+                    self.temperature = "\(weatherVM.todayWeather.currentTemperature)"
+                    self.city = weatherVM.todayWeather.cityName
+                    self.weatherType = weatherVM.todayWeather.weatherType
+                    self.weatherIcon = weatherVM.todayWeather.weatherIcon
+                    self.isLoaded = true
+                }
+                
+            })
 
             
             
             VStack {
                 ScrollView(.vertical, showsIndicators: false){
-                    ForEach(1..<5) { _ in
-                        DaysWeatherCard()
+                    ForEach(weatherVM.fiveDaysforcast, id: \.self ) { day in
+                        DaysWeatherCard(day: day)
                     }
+                    .padding(.top, 5)
+                    .padding(.bottom, 10)
                 }
             }
-            .padding(.top, 5)
-            .padding(.bottom, 10)
-            .frame(height: screen.height/2)
-
+            .frame(height: SCREEN.height/2)
+            .onAppear {
+                weatherVM.download5DaysForcast {
+                    //getting data to list
+                    //nothing here for now
+                }
+            }
             
-        }.edgesIgnoringSafeArea(.all)
+        }
+        .edgesIgnoringSafeArea(.all)
         
     }
 }
