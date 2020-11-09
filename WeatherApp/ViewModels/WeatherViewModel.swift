@@ -93,7 +93,7 @@ class WeatherViewModel: ObservableObject {
                                 }
                                 
                                 if let weather = days[number]["weather"] as? [Dictionary<String,AnyObject>] {
-                                    if let weatherType = weather[0]["description"] as? String {
+                                    if let weatherType = weather[0]["main"] as? String {
                                         day.weatherType = weatherType
                                     }
                                     if let weatherIcon = weather[0]["icon"] as? String {

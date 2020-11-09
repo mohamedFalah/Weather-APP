@@ -18,8 +18,8 @@ struct DaysWeatherCard: View {
                 .renderingMode(.original)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 100, height: 100, alignment: .leading)
-                .shadow(color: Color.white, radius: 3, x: 1, y: 3)
-                .shadow(color: Color.black, radius: 3, x: 1, y: 3)
+                .shadow(color: Color.white, radius: 3, x: 1, y: 2)
+                .shadow(color: Color.black, radius: 3, x: 0, y: 3)
             
             VStack(alignment: .leading , spacing: 5) {
                 Text(day.day)
