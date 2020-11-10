@@ -13,13 +13,15 @@ struct DaysWeatherCard: View {
     
     var body: some View {
         HStack (){
-            WebImage(url: URL(string: "\(BASE_ICON_URL)\(day.weatherIcon)\(ICON_FORMAT)"))
-                .resizable()
-                .renderingMode(.original)
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 100, height: 100, alignment: .leading)
-                .shadow(color: Color.white, radius: 3, x: 1, y: 2)
-                .shadow(color: Color.black, radius: 3, x: 0, y: 3)
+            VStack {
+                WebImage(url: URL(string: "\(BASE_ICON_URL)\(day.weatherIcon)\(ICON_FORMAT)"))
+                    .resizable()
+                    .scaledToFill()
+                    //.aspectRatio(1,contentMode: .fill)
+                    .shadow(color: Color.white, radius: 3, x: 1, y: 2)
+                    .shadow(color: Color.black, radius: 3, x: 0, y: 3)
+            }
+            .frame(width: 100, height: 100, alignment: .leading)
             
             VStack(alignment: .leading , spacing: 5) {
                 Text(day.day)
@@ -45,7 +47,7 @@ struct DaysWeatherCard: View {
                                     endPoint: .trailing)
                         )
         )
-        .frame(width: SCREEN.width - 20)
+        .frame(width: SCREEN.width - 10)
         .shadow(color: Color(#colorLiteral(red: 0.9921568627, green: 0.8588235294, blue: 0.1529411765, alpha: 1)).opacity(0.3), radius: 10, x: 0, y: 8)
     }
 }

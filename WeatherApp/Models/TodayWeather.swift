@@ -14,6 +14,11 @@ struct TodayWeather {
     private var _weatherType: String!
     private var _currentTemperature: Double!
     private var _weatherIcon: String!
+    private var _pressure: Double!
+    private var _humidity: Double!
+    private var _visibility: Double!
+    private var _wind: Double!
+    private var _feelsLike: Double!
     
     init(){
         //empty init
@@ -62,11 +67,54 @@ struct TodayWeather {
     
     var weatherIcon: String {
         get {
-            return _weatherIcon
+            return _weatherIcon ?? ""
         }
         set {
             _weatherIcon = newValue
         }
+    }
+    var pressure: Double {
+        get {
+            return _pressure ?? 0.0
+        }
+        set {
+            _pressure = newValue
+        }
+    }
+    var humidity: Double {
+        get {
+            return _humidity ?? 0.0
+        }
+        set {
+            _humidity = newValue
+        }
+    }
+    var visibility: Double {
+        get {
+            return _visibility ?? 0.0
+        }
+        
+        set {
+            _visibility = newValue
+        }
+    }
+    var wind: Double {
+        get {
+            return _visibility ?? 0.0
+        }
+        set {
+            _visibility = newValue
+        }
+        
+    }
+    var feelsLike: Double {
+        get {
+            return _feelsLike ?? 0.0
+        }
+        set {
+            _feelsLike = newValue
+        }
+        
     }
     
 }
