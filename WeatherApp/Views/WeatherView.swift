@@ -14,6 +14,8 @@ struct WeatherView: View {
     @State private var isLoaded = false
     @State private var currentWeatherTapped = false
     @State private var todayWeather = TodayWeather()
+    
+    @Binding var searchCancelled: Bool
 
     var body: some View {
         
@@ -35,13 +37,13 @@ struct WeatherView: View {
                     ForEach(weatherVM.fiveDaysforcast, id: \.self ) { day in
                             DaysWeatherCard(day: day)
                                 //.animation(.easeOut(duration:0.1 ))
-                                .transition(.move(edge: .bottom))
                     }
                     .padding(.top, 5)
                     .padding(.bottom, 10)
                 }
             }
             .frame(height: SCREEN.height/2)
+            .transition(.move(edge: .bottom))
             .animation(.spring(response: 0.5, dampingFraction: 0.9, blendDuration: 0))
             .onAppear {
                 weatherVM.download5DaysForcast {
@@ -54,6 +56,8 @@ struct WeatherView: View {
         }
         .background(Color.black.opacity(0.1))
         .edgesIgnoringSafeArea(.all)
+        .blur(radius: searchCancelled ? 0 : 5)
+        .animation(searchCancelled ? .none : .default)
         
         
     }
@@ -61,6 +65,6 @@ struct WeatherView: View {
 
 struct WeatherView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherView()
+        WeatherView(searchCancelled: .constant(false))
     }
 }
