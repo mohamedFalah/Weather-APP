@@ -6,7 +6,8 @@
 //
 
 import Foundation
-
+import SwiftUI
+import UIKit
 
 extension Date {
     //return the day of the week
@@ -19,3 +20,21 @@ extension Date {
     }
     
 }
+
+
+extension Double {
+   // return celsius from kelvin temp
+    mutating func convertKelvinToCelcius() -> Double {
+        let K = self
+        let C = K - 273.15
+        return C
+    }
+}
+
+#if canImport(UIKit)
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: self, for: nil)
+    }
+}
+#endif

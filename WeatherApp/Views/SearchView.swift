@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
-
-struct SearchButtonView: View {
+struct SearchView: View {
+    @ObservedObject var searchVM = SearchViewModel()
     @Binding var Cancelled: Bool
     @State var searchTerm : String = ""
-    @State var viewState = CGSize.zero
+    @State var viewState = CGFloat.zero
+    @State var searchClicked = false
+    @State var cityWeather  = CityWeather()
     var body: some View {
         VStack {
             HStack(spacing: 5){
@@ -19,6 +21,13 @@ struct SearchButtonView: View {
                     BlurView(style: .systemUltraThinMaterialLight)
                     Image(systemName: "magnifyingglass")
                         .font(.title)
+                }.onTapGesture {
+                    if searchTerm.count > 0 {
+                        searchVM.searchCityWeather(searchTerm: searchTerm) {
+                            self.cityWeather = searchVM.cityWeather
+                            self.searchClicked = true
+                        }
+                    }
                 }
                 .frame(width: 60, height: 60)
                 HStack(spacing: 0){
@@ -27,10 +36,11 @@ struct SearchButtonView: View {
                         .padding(.leading, 5)
                     Image(systemName: "multiply")
                         .font(.title)
-                        .frame(width: 28, height: 28)
+                        .frame(width: 40, height: 60)
                         .onTapGesture {
                             searchTerm = ""
                             Cancelled = true
+                            searchClicked = false
                         }
                 }
                 .padding(.trailing, 10)
@@ -38,36 +48,43 @@ struct SearchButtonView: View {
                 .background(BlurView(style: .systemThinMaterial))
 
             }
-            .animation(.easeInOut)
             .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 8)
             .shadow(color: Color.white, radius: 3, x: 1, y: 5)
-            .offset(x: Cancelled ? SCREEN.width - 60 : viewState.width)
+            .offset(x: Cancelled ? SCREEN.width - 60 : viewState)
             .gesture(
-            
                 DragGesture().onChanged {
                     value in
                     if value.translation.width < SCREEN.width - 60 {
                         Cancelled = false
-                        viewState = value.translation
+                        withAnimation {
+                            viewState = value.translation.width
+                        }
                     }
-
                 }
                 .onEnded {
-                    value in
-                    
+                    _ in
                     viewState = .zero
                 }
             )
 
             Spacer()
+            
+            searchClicked ?
+                CityWeatherCard(cityWeather: cityWeather)
+                    .transition(.move(edge: .trailing))
+                    .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0))
+            : nil
+            
+            Spacer()
+            
         }
-        .padding(.top, 50)
+        .padding(.top, 65)
     }
 }
 
 
-struct SearchButtonView_Previews: PreviewProvider {
+struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchButtonView(Cancelled: .constant(true))
+        SearchView(Cancelled: .constant(true))
     }
 }

@@ -7,17 +7,22 @@
 
 import SwiftUI
 import Alamofire
-
+import CoreLocation
 
 class WeatherViewModel: ObservableObject {
     @Published var todayWeather = TodayWeather()
     @Published var fiveDaysforcast: [Forcast] = []
-    //typealias to pass the downloaded data from url request after finish
-    typealias DownloadCompleted = () -> ()
+    @Published var isLocationAvailable = false
     
+    var userLatitude: Double!
+    var userLongitude: Double!
+    //typealias to pass the downloaded data from url request after finish
+    typealias DownloadCompleted = () -> ()        
+    
+
     //get current weather data
     func downloadTodayWeather(completed: @escaping DownloadCompleted) {
-        let todayWeatherUrl = URL(string: "\(BASE_URL)\(WEATHER)\(LATITUDE)26.565191\(LONGTUDE)49.996376\(APPID)\(API_KEY)")!
+        let todayWeatherUrl = URL(string: BASE_URL + WEATHER + LATITUDE + "\(UserLocation.sharedInstance.userLatitude ?? 0)" +  LONGTUDE + "\(UserLocation.sharedInstance.userLongitude ?? 0)" + APPID + API_KEY)!
 
         //Alamofire request with get method
         AF.request(todayWeatherUrl, method: .get).responseJSON {response in
@@ -46,12 +51,12 @@ class WeatherViewModel: ObservableObject {
                         }
                         
                         if let main = dataDictionary["main"] as? Dictionary<String, AnyObject> {
-                            if let temperature = main["temp"] as? Double {
-                                self.todayWeather.currentTemperature = self.convertKelvinToCelcius(temperature: temperature)
+                            if var temperature = main["temp"] as? Double {
+                                self.todayWeather.currentTemperature = temperature.convertKelvinToCelcius()
 //                                print("temp \(self.todayWeather.currentTemperature)")
                             }
-                            if let feelsLike = main["feels_like"] as? Double {
-                                self.todayWeather.feelsLike = self.convertKelvinToCelcius(temperature: feelsLike)
+                            if var feelsLike = main["feels_like"] as? Double {
+                                self.todayWeather.feelsLike = feelsLike.convertKelvinToCelcius()
 //                                print("temp \(self.todayWeather.currentTemperature)")
                             }
                             if let pressure = main["pressure"] as? Double {
@@ -88,7 +93,7 @@ class WeatherViewModel: ObservableObject {
     
     //get the forcast 5 days
     func download5DaysForcast(completed: @escaping DownloadCompleted) {
-        let forcastUrl = URL(string: "\(BASE_URL)\(FORCAST)\(LATITUDE)26.565191\(LONGTUDE)49.996376\(EXCLUDE)\(APPID)\(API_KEY)")!
+        let forcastUrl = URL(string: BASE_URL + FORCAST + LATITUDE + "\(UserLocation.sharedInstance.userLatitude ?? 0)" + LONGTUDE + "\(UserLocation.sharedInstance.userLongitude ?? 0 )" + EXCLUDE + APPID + API_KEY)!
         //get the forcast
         
         AF.request(forcastUrl, method: .get).responseJSON { (response) in
@@ -123,12 +128,12 @@ class WeatherViewModel: ObservableObject {
                                 }
                                 
                                 if let main = day["temp"] as? Dictionary<String, AnyObject> {
-                                    if let minTemp = main["min"] as? Double {
-                                        daily.minTemperature = self.convertKelvinToCelcius(temperature: minTemp)
+                                    if var minTemp = main["min"] as? Double {
+                                        daily.minTemperature = minTemp.convertKelvinToCelcius()
                                     }
                                     
-                                    if let maxTemp = main["max"] as? Double {
-                                        daily.maxTemperature = self.convertKelvinToCelcius(temperature: maxTemp)
+                                    if var maxTemp = main["max"] as? Double {
+                                        daily.maxTemperature = maxTemp.convertKelvinToCelcius()
                                     }
                                 }
                                 
@@ -148,14 +153,7 @@ class WeatherViewModel: ObservableObject {
         
     }
     
-    
-    func convertKelvinToCelcius(temperature: Double) -> Double {
-     
-        let K = temperature
-        let C = K - 273.15
-        let CRounded = Double(round(100*C)/100)
-        return CRounded
-    }
+
    
 }
 

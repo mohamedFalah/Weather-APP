@@ -73,7 +73,9 @@ struct CurrentWeatherView: View {
                     .redacted(reason: isLoaded ? .init() : .placeholder)
 
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.top, 45)
+            
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 0){
                     Spacer()
